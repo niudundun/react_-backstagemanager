@@ -1,26 +1,20 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import {HashRouter, Route, Switch} from 'react-router-dom'
+
+import Login from "./pages/login/login"
+import Admin from "./pages/admin/admin"
+
+export default class App extends Component {
+
+  render () {
+    return (
+      <HashRouter>
+        <Switch> {/* /login/xxx   默认使用不完全匹配 | 使用第一个匹配的路由 */}
+          <Route path="/login" component={Login}/>
+          <Route path="/" component={Admin}/>
+        </Switch>
+      </HashRouter>
+    )
+  }
 }
-
-export default App;
