@@ -8,3 +8,5 @@ export default createStore(
   reducer,
   IsDev ? composeWithDevTools(applyMiddleware(thunk)) : applyMiddleware(thunk)
 )
+
+
