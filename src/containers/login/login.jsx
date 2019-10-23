@@ -1,26 +1,34 @@
 import React, { Component } from 'react'
+import { Redirect } from "react-router-dom";
 import { Form, Icon, Input, Button } from 'antd';
+import {connect} from 'react-redux'
 
 import logo from './images/logo.png'
 import './less/login.less'
+import { loginAsync } from "../../redux/action_creators/user";
 
 const { Item } = Form
-
+@connect(
+  // 因为传给store 的reducer 是总reducer函数 ，里面有user和其他的reducer
+  state => ({hasLogin:state.user.hasLogin}),
+  {loginAsync}
+)
+@Form.create()
 class Login extends Component {
 
   handleSubmit = (event) => {
+    //阻止点击登录按钮后的自动跳转
     event.preventDefault();
 
     this.props.form.validateFields(( err, values ) => {
+      // values 为input标签的值集合成的对象   
       if (!err){
-
+        const {username,password} = values
+        this.props.loginAsync(username,password)
       }else{
 
       }
     })
-    //可以获取被getFieldDecorator包裹的标签的值
-    // const username = this.props.form.getFieldValue('username')
-    // const password = this.props.form.getFieldValue('password')
   }
 
   validatePwd = ( rule, value, callback ) => {
@@ -36,6 +44,10 @@ class Login extends Component {
   }
   render() {
     const { getFieldDecorator } = this.props.form;
+    const {hasLogin} = this.props
+    if(hasLogin){
+      return < Redirect to='/' />   
+    }
     return (
       <div className="login">
         <header className="login-header">
@@ -86,4 +98,4 @@ class Login extends Component {
   }
 }
 
-export default Form.create()(Login)
+export default Login
