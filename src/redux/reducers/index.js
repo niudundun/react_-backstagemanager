@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 
 import user from './users'
-import xxx from './xxx';
+import headerTitle from './header_title';
 
-export default combineReducers({user,xxx})
+export default combineReducers({user,headerTitle})

@@ -7,7 +7,7 @@ import { Layout } from 'antd';
 // import { reqUsersList } from "../../api";
 import WithCheckLogin from "../with-check-login";
 import LeftNav from "./left-nav";
-import UserHeader from "./header";
+import Header from "./header";
 import Home from "../../components/home";
 import Category from "../category";
 import Product from "../product";
@@ -29,7 +29,7 @@ class Admin extends Component {
           <LeftNav/>
         </Sider>
         <Layout>
-          <UserHeader/>
+          <Header/>
           <Content>
             <Switch>
               <Route path='/home' component={Home}/>
