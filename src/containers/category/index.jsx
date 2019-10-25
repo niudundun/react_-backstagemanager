@@ -9,6 +9,7 @@ const columns = [
   {
     title: '分类',
     dataIndex: 'name',
+    key:'name'
   },
   {
     width: 300,
@@ -26,15 +27,13 @@ export default class Category extends Component {
   getCategorys = async() => {
     this.setState({loading:true})
     const result = await reqCategorys()
-    console.log(result)
     this.setState({loading:false})
     if(result.status ===0){
       const categorys = result.data
-      this.setState({categorys:result.data})
+      this.setState({categorys})
     }else{
       message.error('resule.msg')
     }
-
   }
 
   componentDidMount(){
