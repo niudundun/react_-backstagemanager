@@ -1,19 +1,21 @@
 import React, { Component } from 'react'
-import { Redirect } from "react-router-dom";
+
 import { Form, Icon, Input, Button } from 'antd';
 import {connect} from 'react-redux'
 
 import logo from './images/logo.png'
-import './less/login.less'
+import './less/index.less'
 import { loginAsync } from "../../redux/action_creators/user";
+import WithCheckLogin from "../with-check-login";
 
 const { Item } = Form
 @connect(
   // 因为传给store 的reducer 是总reducer函数 ，里面有user和其他的reducer
-  state => ({hasLogin:state.user.hasLogin}),
+  state => ({}),
   {loginAsync}
 )
 @Form.create()
+@WithCheckLogin
 class Login extends Component {
 
   handleSubmit = (event) => {
@@ -44,10 +46,6 @@ class Login extends Component {
   }
   render() {
     const { getFieldDecorator } = this.props.form;
-    const {hasLogin} = this.props
-    if(hasLogin){
-      return < Redirect to='/' />   
-    }
     return (
       <div className="login">
         <header className="login-header">
