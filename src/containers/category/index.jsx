@@ -26,6 +26,7 @@ export default class Category extends Component {
   getCategorys = async() => {
     this.setState({loading:true})
     const result = await reqCategorys()
+    console.log(result)
     this.setState({loading:false})
     if(result.status ===0){
       const categorys = result.data
@@ -41,13 +42,13 @@ export default class Category extends Component {
   }
 
   render() {
+    const {loading,categorys} = this.state
     const extra = (
       <Button type='primary'>
         <Icon type='plus'></Icon>
         添加
       </Button>
     )
-    const {loading,categorys} = this.state
     return (
       <div>
         <Card extra={extra} >
@@ -56,6 +57,7 @@ export default class Category extends Component {
             loading={loading}
             dataSource={categorys}
             columns={columns}
+            rowKey="_id"
             pagination = {{pageSize:5,showQuickJumper:true}}
           />
         </Card>
