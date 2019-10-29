@@ -13,7 +13,7 @@ const instance = axios.create({
 
 //请求拦截器参数为一个回调函数传配置对象并将其返回
 instance.interceptors.request.use(config => {
-  console.log('request inter');
+  // console.log('request inter');
   Nprogress.start()
   const {data} = config
   // post put 请求的data对象数据为json 需要转换成字符串
@@ -32,7 +32,7 @@ instance.interceptors.request.use(config => {
 instance.interceptors.response.use(
   //拦截响应成功的回调
   response => {
-    console.log('response inter', response);
+    // console.log('response inter', response);
     Nprogress.done()
     const result = response.data
     return result
