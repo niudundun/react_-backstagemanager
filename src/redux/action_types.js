@@ -4,3 +4,7 @@ export const SET_HEADER_TITLE = 'set_header_title'
 export const GET_CATEGORYS = 'get_categorys'
 export const ADD_CATEGORY = 'add_category'
 export const UPDATE_CATEGORY = 'update_category'
+
+export const GET_ROLES = 'get_roles'
+export const ADD_ROLES = 'add_roles'
+export const UPDATE_ROLES = 'update_roles'

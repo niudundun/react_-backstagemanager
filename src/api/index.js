@@ -114,3 +114,21 @@ export const reqAddUpdateProduct = (product) => ajax.post(
   '/manage/product/' + (product._id ? 'update' : 'add'),
   product
 )
+
+//获取角色列表
+export const reqGetRoles = () => ajax('/manage/role/list')
+
+//添加角色
+export const reqAddRole = (roleName) => ajax.post('/manage/role/add',{roleName})
+
+//设置权限后更新角色
+export  const reqUpdateRole = (role) => ajax.post('/manage/role/update',role)
+
+//获取用户
+export const reqGetUsers = () => ajax('/manage/user/list')
+
+//添加/更新用户
+export const reqAddUpdateUser = (user) => ajax.post('/manage/user/'+(user.id?'update':'add'),user)
+
+//删除用户
+export const reqDeletUser = (userId) => ajax.post('/manage/user/delete',{userId})

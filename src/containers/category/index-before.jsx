@@ -1,4 +1,4 @@
-import React, { Component,userState,useEffect,useRef } from 'react'
+import React, { Component } from 'react'
 import {
   Card,
   Icon,
@@ -14,74 +14,86 @@ import LinkButton from "../../components/link-button";
 import AddUpdateForm from "./add-update-form";
 
 
-function Category(props) {
-  const [loading,setLoading] = useState(false)
-  const [isShowAdd,setShowAdd] = useState(false)
-  const [isShowUpdate,setShouUpdate] = useState(false)
-
-  const formRef = useRef(null)
-
-  const columnsRef = userRef(
-    [
-      {
-        title: '分类名称',
-        dataIndex: 'name',
-      },
-      {
-        width: 300,
-        title: '操作',
-        render: (category) => <LinkButton onClick={() => { this.showUpdate(category) }}>修改分类</LinkButton>
-      }
-    ]
-  )
-  
-  useEffect(() => {
-      this.getCategorys()
-  }, [])
-
-  async function getCategorys() {
-    setLoading(true)
-    const msg = await props.getCategorysAsync()
-    setLoading(false)
-    if (msg) return message.error(msg)
-   }
 
 
 
-}
-
-
-
+@connect(
+  state => ({ categorys: state.categorys }),
+  { getCategorysAsync, addCategoryAsync, updateCategoryAsync }
+)
 class Category extends Component {
-  
+  state = {
+    loading: false,
+    isShowAdd: false,//添加
+    isShowUpdate: false,//修改分类
+  }
+
+  columns = [
+    {
+      title: '分类名称',
+      dataIndex: 'name',
+    },
+    {
+      width: 300,
+      title: '操作',
+      render: (category) => <LinkButton onClick={() => { this.showUpdate(category) }}>修改分类</LinkButton>
+    }
+  ]
 
   //获取分类
- 
-  //添加商品分类li988i
+  getCategorys = async () => {
+    this.setState({ loading: true })
+
+    const msg = await this.props.getCategorysAsync()
+    this.setState({ loading: false })
+    if (msg) return message.error(msg)
+  }
+  //添加商品分类
   addCategory = () => {
-    formRef.current.validateFields(async (err, values) => {
+    this.form.validateFields(async (err, values) => {
       if (!err) {
         const { categoryName } = values
         const msg = await this.props.addCategoryAsync(categoryName)
         this.form.resetFields()//重置输入框至初始值
         if(msg) return message.error(msg)
         else{
-          setShowAdd(false)
+          this.setState({
+            isShowAdd: false
+          })
           message.success('添加分类成功')
         }
+
+        //发送添加分类请求
+       /*  const result = await reqAddCategory(categoryName)
+        this.form.resetFields()//重置输入框至初始值
+        if (result.status === 0) { //成功的话更新categorys
+          const category = result.data
+          const categorys = this.state.categorys
+          this.setState({
+            //不能直接修改 categorys
+            categorys: [category, ...categorys],
+            isShowAdd: false
+          })
+          message.success('添加分类成功')
+        } else {
+          message.error(result.msg)
+        } */
+
       }
     })
   }
   //隐藏添加modal
   CancelAdd = () => {
     this.form.resetFields()
-    setShowAdd({ isShowAdd: false)
+    this.setState({ isShowAdd: false })
   }
 
   //显示更新的modal 且存下当前行数据的值
   showUpdate = (category) => {
     this.category = category
-    setShouUpdate(true)
+    this.setState({
+      isShowUpdate: true
+    })
   }
 
   //更新商品分类
@@ -96,9 +108,34 @@ class Category extends Component {
           // 更新失败, 显示提示
           message.error(msg)
         } else {
-          setShouUpdate(false)
+          this.setState({
+            isShowUpdate: false
+          })
           message.success('更新分类成功')
         }
+
+
+        //发送更新分类请求 传入原本数据的ID 和 新改的名字
+       /*  const result = await reqUpdateCategory({ categoryId, categoryName })
+        this.form.resetFields()//重置输入框至初始值
+        if (result.status === 0) { //成功的话更新categorys
+          const category = { _id: categoryId, name: categoryName }
+          const categorys = this.state.categorys
+          this.setState({
+            //不能直接修改 categorys
+            categorys: categorys.map(item => {
+              if (item._id === category._id) {
+                return category
+              } else {
+                return item
+              }
+            }),
+            isShowUpdate: false
+          })
+          message.success('更新分类成功')
+        } else {
+          message.error(result.msg)
+        } */
       }
     })
   }
@@ -106,10 +143,12 @@ class Category extends Component {
   CancelUpdate = () => {
     delete this.category
     this.form.resetFields()
-    setShouUpdate(false)
+    this.setState({ isShowUpdate: false })
   }
 
-  
+  componentDidMount() {
+    this.getCategorys()
+  }
 
   render() {
     const { loading, isShowAdd, isShowUpdate } = this.state
@@ -127,7 +166,7 @@ class Category extends Component {
         <Table bordered
           loading={loading}
           dataSource={categorys}
-          columns={columnsRef.current}
+          columns={this.columns}
           rowKey='_id'
           pagination={{ pageSize: 5, showQuickJumper: true }} />
 
@@ -152,7 +191,4 @@ class Category extends Component {
   }
 }
 
-export default connect(
-  state => ({ categorys: state.categorys }),
-  { getCategorysAsync, addCategoryAsync, updateCategoryAsync }
-)()
+export default Category

@@ -30,7 +30,6 @@ class AddUpdate extends Component {
           this.props.history.replace('/product')
         }else message.error(result.msg)
       }
-      
     })
   }
 
